@@ -43,7 +43,7 @@ export class TaskformComponent implements OnChanges{
         console.log('Formulario correcto y creamos nueva tarea');
 
         // instanciamos las variables necesarias para crear una nueva tarea
-        const id: number = Math.floor(Math.random() * 100);
+        const id: string = this.formTaskEdit.get('id')?.value;
         const name = this.formTaskEdit.get('name')?.value;
         const description = this.formTaskEdit.get('description')?.value;
         const priority: TaskPriority = this.formTaskEdit.get('priority')?.value;

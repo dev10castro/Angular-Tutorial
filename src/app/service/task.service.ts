@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Task, TaskPriority, TaskStatus} from '../components/models/task.model';
 import {TaskEvent} from '../components/models/TaskEvent.model';
-import { Database, ref, listVal } from '@angular/fire/database';
-import {Observable} from 'rxjs';
+import {Database, ref, listVal, remove, onValue} from '@angular/fire/database';
+import {map, Observable} from 'rxjs';
+import {list} from '@angular/fire/storage';
 
 
 @Injectable({
@@ -30,13 +31,11 @@ export class TaskService {
       case "changePriorityDown":
         this.changePriorityDown(taskEvent.taskId);
         break;
-      case "deleteTask":
-        this.deleteTask(taskEvent.taskId);
-        break;
+
     }
   }
 
-  changeStatus(taskId: number){
+  changeStatus(taskId: string){
     const task = this.taskList.find(task => task.id === taskId); // Encuentra la tarea por su ID
     if (task) {
       switch (task.status) {
@@ -53,7 +52,7 @@ export class TaskService {
     }
   }
 
-  changePriorityDown(taskId: number){
+  changePriorityDown(taskId: string){
     const task = this.taskList.find(task => task.id === taskId); // Encuentra la tarea por su ID
     if (task) {
       switch (task.priority) {
@@ -70,7 +69,7 @@ export class TaskService {
     }
   }
 
-  changePriorityUp(taskId: number){
+  changePriorityUp(taskId: string){
     const task = this.taskList.find(t => t.id === taskId); // Encuentra la tarea por su ID
     if (task) {
       switch (task.priority) {
@@ -87,19 +86,14 @@ export class TaskService {
     }
   }
 
-  deleteTask(taskId: number): void {
-    const task = this.taskList.find(t => t.id === taskId);
-    if (task) {
-      task.isDelete = true;
-    }
-  }
+
 
   addTask(task:Task){
     this.taskList.push(task);
     console.log('Nueva tarea añadida:', task);
   }
 
-  getTask(taskId:number){
+  getTask(taskId:string){
    return this.taskList.filter((task1:Task)=>{
       return taskId==task1.id;
     })
@@ -107,11 +101,41 @@ export class TaskService {
 
   getTasksAll(): Observable<Task[]> {
     const taskRef = ref(this.database, "taskList");
-    return listVal(taskRef) as Observable<Task[]>;
+    return new Observable((observer) => {
+      onValue(
+        taskRef,
+        (snapshot) => {
+          const tasks: Task[] = [];
+          snapshot.forEach((childSnapshot) => {
+            tasks.push({
+              id: childSnapshot.key, // Incluye la clave única como parte del objeto
+              ...childSnapshot.val(),
+            } as Task);
+          });
+          observer.next(tasks); // Emite las tareas al suscriptor
+          observer.complete();
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
-  remove(taskId:string){
 
+  deleteTask(taskId: string): Promise<void> {
+    const taskRef = ref(this.database, `/taskList/task${taskId}`);
+    return remove(taskRef)
+      .then(() => {
+        console.log(`Tarea con ID ${taskId} borrada correctamente.`);
+      })
+      .catch((error) => {
+        console.error(`Error borrando tarea con ID ${taskId}:`, error);
+        throw error; // Vuelve a lanzar el error si es necesario
+      });
   }
+
+
+
 
 }
