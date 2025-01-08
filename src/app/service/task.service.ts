@@ -131,16 +131,17 @@ export class TaskService {
 
 
   deleteTask(taskId: string): Promise<void> {
-    const taskRef = ref(this.database, `/taskList/task${taskId}`);
+    const taskRef = ref(this.database, `taskList/${taskId}`);
     return remove(taskRef)
       .then(() => {
         console.log(`Tarea con ID ${taskId} borrada correctamente.`);
       })
       .catch((error) => {
-        console.error(`Error borrando tarea con ID ${taskId}:`, error);
-        throw error; // Vuelve a lanzar el error si es necesario
+        console.error(`Error borrando la tarea con ID ${taskId}:`, error);
+        throw error;
       });
   }
+
 
 
 

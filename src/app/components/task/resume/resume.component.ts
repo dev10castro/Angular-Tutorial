@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../service/task.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-resume',
@@ -19,7 +20,7 @@ export class ResumeComponent {
 
   tasks: Task[] = [];
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,private router: Router) {}
 
 
 
@@ -43,6 +44,7 @@ export class ResumeComponent {
       .catch((error) => {
         console.error(`Error borrando tarea ${taskId}:`, error);
       });
+
   }
 
 
