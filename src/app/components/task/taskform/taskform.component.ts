@@ -7,6 +7,7 @@ import {TaskService} from '../../../service/task.service';
 import {Route, Router} from '@angular/router';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {FooterComponent} from '../../footer/footer.component';
+import {routes} from '../../../app.routes';
 
 @Component({
   selector: 'app-taskform',
@@ -24,7 +25,7 @@ export class TaskformComponent implements OnChanges{
 
 
 
-  constructor(formBuilder: FormBuilder,private taskService:TaskService) {
+  constructor(formBuilder: FormBuilder,private taskService:TaskService, private router: Router) {
     this.formTaskEdit = formBuilder.group({
 
       'name': ['', [Validators.required, Validators.maxLength(50), Validators.minLength(5)]],
@@ -36,40 +37,33 @@ export class TaskformComponent implements OnChanges{
 
 
 
-  onsubmit(): void {
+  onSubmit(): void {
     if (this.formTaskEdit.valid) {
-      console.log('Formulario correcto y creamos nueva tarea')
-      if (this.formTaskEdit.valid) {
-        console.log('Formulario correcto y creamos nueva tarea');
 
-        // instanciamos las variables necesarias para crear una nueva tarea
-        const id: string = this.formTaskEdit.get('id')?.value;
-        const name = this.formTaskEdit.get('name')?.value;
-        const description = this.formTaskEdit.get('description')?.value;
-        const priority: TaskPriority = this.formTaskEdit.get('priority')?.value;
-        const status: TaskStatus = TaskStatus.PENDING;
-        const creationDate: string = new Date().toDateString();
-        const expirationDate: string = this.formTaskEdit.get('expireDate')?.value;
-        const idDelete: boolean = false;
+      const newTask: Task = new Task(
+        this.formTaskEdit.get('id')?.value || '',
+        this.formTaskEdit.get('name')?.value,
+        this.formTaskEdit.get('description')?.value,
+        this.formTaskEdit.get('priority')?.value || 'M',
+        this.formTaskEdit.get('status')?.value || 'P', // Estado inicial: Pendiente
+        this.formTaskEdit.get('creationDate')?.value || new Date().toISOString(), // Fecha de creación actual
+        this.formTaskEdit.get('expireDate')?.value,
+        this.formTaskEdit.get('isDelete')?.value || false
+      );
 
-        // Crear nueva instancia de Task
-        let newTask = new Task(id, name, description, priority, status, creationDate, expirationDate, idDelete);
-        this.taskService.addTask(newTask);
-
-
-        // añadimos la tarea a la lista de tareas
-        console.log(newTask);
-
-        this.formTaskEdit.reset();
-
-
-      } else {
-        console.log(`Formulario con errores y voy a mostrar los errores ${this.formTaskEdit.get('name')?.errors}`)
-      }
-
+      this.taskService.addTask(newTask)
+        .then(() => {
+          console.log('Tarea creada con éxito:', newTask);
+          this.formTaskEdit.reset(); // Reinicia el formulario
+          //vuelve a la pantalla tasklist
+          this.router.navigate(['/tasks']);
+        })
+        .catch((error) => {
+          console.error('Error al guardar la tarea:', error);
+        });
     }
-
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['taskInput']) {

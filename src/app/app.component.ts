@@ -18,13 +18,6 @@ export class AppComponent {
   nombre:string=""
   numero:number=0;
 
-
-
-  muestraimagenaleatoria(){
-    let num:number = Math.trunc((Math.random()*1000)+100);
-    this.imagenaleatoria="https://picsum.photos/200/300?random="+num;
-  }
-
 }
 
 

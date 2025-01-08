@@ -39,14 +39,9 @@ export class ResumeComponent {
     this.taskService.deleteTask(taskId)
       .then(() => {
         console.log(`Task ${taskId} borrada correctamente.`);
-        return this.taskService.getTasksAll().toPromise(); // Recupera la lista actualizada
-      })
-      .then((tasks) => {
-        this.tasks = tasks ?? []; // Actualiza la lista de tareas
-        console.log("Tasks despues de eliminar:", this.tasks);
       })
       .catch((error) => {
-        console.error(`Error borrando tarea${taskId}:`, error);
+        console.error(`Error borrando tarea ${taskId}:`, error);
       });
   }
 
