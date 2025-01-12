@@ -22,6 +22,9 @@ export class AuthService {
 
   }
 
+  getCurrentUser() {
+    return this.auth.currentUser; // Firebase Authentication
+  }
 
   register({email, password}:any){
     return createUserWithEmailAndPassword(this.auth, email, password);

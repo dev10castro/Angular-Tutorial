@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../service/task.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-resume',
@@ -19,7 +20,7 @@ export class ResumeComponent {
 
   tasks: Task[] = [];
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,private router: Router) {}
 
 
 
@@ -39,15 +40,11 @@ export class ResumeComponent {
     this.taskService.deleteTask(taskId)
       .then(() => {
         console.log(`Task ${taskId} borrada correctamente.`);
-        return this.taskService.getTasksAll().toPromise(); // Recupera la lista actualizada
-      })
-      .then((tasks) => {
-        this.tasks = tasks ?? []; // Actualiza la lista de tareas
-        console.log("Tasks despues de eliminar:", this.tasks);
       })
       .catch((error) => {
-        console.error(`Error borrando tarea${taskId}:`, error);
+        console.error(`Error borrando tarea ${taskId}:`, error);
       });
+
   }
 
 

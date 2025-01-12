@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Task, TaskPriority, TaskStatus} from '../components/models/task.model';
 import {TaskEvent} from '../components/models/TaskEvent.model';
-import {Database, ref, listVal, remove, onValue} from '@angular/fire/database';
+import {Database, ref, remove, onValue, push, set} from '@angular/fire/database';
 import {map, Observable} from 'rxjs';
-import {list} from '@angular/fire/storage';
+
 
 
 @Injectable({
@@ -88,16 +88,23 @@ export class TaskService {
 
 
 
-  addTask(task:Task){
-    this.taskList.push(task);
-    console.log('Nueva tarea añadida:', task);
+  addTask(task: Task): Promise<string> {
+    const taskRef = ref(this.database, 'taskList'); // Referencia a la lista de tareas en Firebase
+    const newTaskRef = push(taskRef); // Crear una nueva entrada en Firebase
+    task.id = newTaskRef.key as string; // Asignar el ID generado por Firebase
+    return set(newTaskRef, task)
+      .then(() => {
+        console.log('Tarea guardada exitosamente en Firebase.');
+        return task.id; // Retornar el ID generado
+      })
+      .catch((error) => {
+        console.error('Error al guardar la tarea:', error);
+        throw error;
+      });
   }
 
-  getTask(taskId:string){
-   return this.taskList.filter((task1:Task)=>{
-      return taskId==task1.id;
-    })
-  }
+
+
 
   getTasksAll(): Observable<Task[]> {
     const taskRef = ref(this.database, "taskList");
@@ -124,16 +131,17 @@ export class TaskService {
 
 
   deleteTask(taskId: string): Promise<void> {
-    const taskRef = ref(this.database, `/taskList/task${taskId}`);
+    const taskRef = ref(this.database, `taskList/${taskId}`);
     return remove(taskRef)
       .then(() => {
         console.log(`Tarea con ID ${taskId} borrada correctamente.`);
       })
       .catch((error) => {
-        console.error(`Error borrando tarea con ID ${taskId}:`, error);
-        throw error; // Vuelve a lanzar el error si es necesario
+        console.error(`Error borrando la tarea con ID ${taskId}:`, error);
+        throw error;
       });
   }
+
 
 
 

@@ -1,11 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      <h2 class="text-center">Bienvenido, {{ personName }} {{ personSurname }}.</h2>
       <h3>Listado de Tareas</h3>
     </div>
     <div class="col-md-12">
       <ng-container *ngFor="let task of tasks">
-        <app-resume *ngIf="!task.isDelete" [taskInput]="task" (eventEditTask)="editTask($event)" ></app-resume>
+        <app-resume *ngIf="!task.isDelete" [taskInput]="task" ></app-resume>
       </ng-container>
     </div>
   </div>
