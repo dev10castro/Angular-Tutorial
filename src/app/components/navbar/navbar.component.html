@@ -1,37 +1,42 @@
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
-    <a class="navbar-brand" routerLink="/home">TaskManager</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item" *ngIf="!isAuthenticated">
-          <a class="nav-link" routerLink="/login">Login</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="/home">TaskManager</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <!-- Opciones visibles solo si no estás logueado -->
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a class="nav-link" routerLink="/signin">Signin</a>
+      </li>
+      <!-- Opciones visibles solo si estás logueado -->
+      <ng-container *ngIf="isLoggedIn">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/tasks">Inicio</a>
         </li>
-        <li class="nav-item" *ngIf="!isAuthenticated">
-          <a class="nav-link" routerLink="/signin">Signin</a>
-        </li>
-        <li class="nav-item">
-        <li class="nav-item active" *ngIf="isAuthenticated">
-          <a class="nav-link" routerLink="/tasks">Inicio <span class="sr-only"></span></a>
-        </li>
-        <li class="nav-item" *ngIf="isAuthenticated">
-          <a class="nav-link" routerLink="/taskform">Nueva Tarea</a>
-        </li>
-        <li class="nav-item dropdown" *ngIf="isAuthenticated">
-          <a class="nav-link dropdown-toggle" routerLink="/dashboard" role="button" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="isAuthenticated">
-            Dashboard
-          </a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" routerLink="/dashboard" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dashboard </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/dashboard/stats" *ngIf="isAuthenticated">Stats</a></li>
-            <li><a class="dropdown-item" routerLink="/dashboard/profile" *ngIf="isAuthenticated">Profile</a></li>
+            <li>
+              <a class="dropdown-item" routerLink="/dashboard/stats">Stats</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/dashboard/profile">Profile</a>
+            </li>
           </ul>
         </li>
-        <li class="nav-item" >
-          <a class="nav-link" (click)="logout()" role="button" routerLink="/signin" *ngIf="isAuthenticated">SignOut</a>
+        <!-- Nueva Tarea, solo si el rol es admin -->
+        <li class="nav-item" *ngIf="role === 'admin'">
+          <a class="nav-link" routerLink="/taskform">Nueva Tarea</a>
         </li>
-
-      </ul>
-    </div>
-  </nav>
+        <!-- Opción de cerrar sesión -->
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()" role="button">SignOut</a>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</nav>

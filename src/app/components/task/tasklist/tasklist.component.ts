@@ -41,17 +41,19 @@ export class TasklistComponent implements OnInit{
     if (user) {
       const uid = user.uid;
 
-      this.personService.getByUid(uid).then((person) => {
-        if (person) {
-          this.personName = person.name;
-          this.personSurname = person.surname;
-        }
-      }).catch((error) => {
-        console.error('Error al cargar los datos de la persona:', error);
+      this.personService.getByUid(uid).subscribe({
+        next: (person) => {
+          if (person) {
+            this.personName = person.name;
+            this.personSurname = person.surname;
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar los datos de la persona:', error);
+        },
       });
     }
   }
-
 
 }
 

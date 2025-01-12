@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import {Database, ref,get,  push, set, DataSnapshot} from '@angular/fire/database';
+import {Database, ref, get, push, set, DataSnapshot, child, objectVal} from '@angular/fire/database';
 import {Person} from '../components/models/person.model';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonService {
+
+  private COLLECTION_NAME="persons"
 
   constructor(private database:Database) { }
 
@@ -19,14 +22,11 @@ export class PersonService {
 
   // Obtener datos de la persona por UID
 
-  getByUid(uid: string): Promise<Person | null> {
-    const personRef = ref(this.database, `/persons/${uid}`);
-    return get(personRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        return snapshot.val() as Person;
-      }
-      return null;
-    });
+  getByUid(uid: string): Observable<Person | null> {
+    const usersRef = ref(this.database,this.COLLECTION_NAME);
+    const userRef = child(usersRef,uid);
+
+    return objectVal(userRef) as Observable<Person>
   }
 
 
