@@ -37,14 +37,15 @@ export class ResumeComponent {
   }
 
   deleteTask(taskId: string): void {
-    this.taskService.deleteTask(taskId)
-      .then(() => {
+    this.taskService.deleteTask(taskId).subscribe(
+      () => {
         console.log(`Task ${taskId} borrada correctamente.`);
-      })
-      .catch((error) => {
+      },
+      (error) => {
         console.error(`Error borrando tarea ${taskId}:`, error);
-      });
-
+        alert('Hubo un error al borrar la tarea. Revisa la consola para más detalles.');
+      }
+    );
   }
 
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Task, TaskPriority, TaskStatus} from '../components/models/task.model';
 import {TaskEvent} from '../components/models/TaskEvent.model';
 import {Database, ref, remove, onValue, push, set} from '@angular/fire/database';
-import {map, Observable} from 'rxjs';
+import {catchError, from, map, Observable, tap, throwError} from 'rxjs';
 
 
 
@@ -16,24 +16,6 @@ export class TaskService {
   constructor(private database:Database) { }
 
 
-  getTasks(): Task[] {
-    return this.taskList;
-  }
-
-  modifyTask(taskEvent: TaskEvent) {
-    switch (taskEvent.action) {
-      case "changePriorityUp":
-        this.changePriorityUp(taskEvent.taskId);
-        break;
-      case "changeStatus":
-        this.changeStatus(taskEvent.taskId);
-        break;
-      case "changePriorityDown":
-        this.changePriorityDown(taskEvent.taskId);
-        break;
-
-    }
-  }
 
   changeStatus(taskId: string){
     const task = this.taskList.find(task => task.id === taskId); // Encuentra la tarea por su ID
@@ -130,16 +112,15 @@ export class TaskService {
   }
 
 
-  deleteTask(taskId: string): Promise<void> {
+  deleteTask(taskId: string): Observable<void> {
     const taskRef = ref(this.database, `taskList/${taskId}`);
-    return remove(taskRef)
-      .then(() => {
-        console.log(`Tarea con ID ${taskId} borrada correctamente.`);
-      })
-      .catch((error) => {
+    return from(remove(taskRef)).pipe(
+      tap(() => console.log(`Tarea con ID ${taskId} borrada correctamente.`)),
+      catchError((error) => {
         console.error(`Error borrando la tarea con ID ${taskId}:`, error);
-        throw error;
-      });
+        return throwError(() => error);
+      })
+    );
   }
 
 
