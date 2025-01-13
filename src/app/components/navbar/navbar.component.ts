@@ -24,31 +24,18 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verificar si el usuario está autenticado
-    this.authservice.getUserAuthenticated().subscribe({
-      next: (user: User | null) => {
-        if (user) {
-          this.isLoggedIn = true;
-          // Obtener el rol del usuario
-          this.personService.getByUid(user.uid).subscribe({
-            next: (person: Person | null) => {
-              if (person) {
-                this.role = person.role; // Asignar rol
-              }
-            },
-            error: (error) => {
-              console.error('Error al obtener la información del usuario:', error);
-            }
-          });
-        } else {
-          this.isLoggedIn = false;
-          this.role = null;
+    this.authservice.getUserDataAuth().subscribe(({user,person})=>{
+      if(user){
+        this.isLoggedIn = true;
+        if(person && person.role){
+          this.role = person.role;
+          this.isLoggedIn=true;
+          console.log(person.role);
         }
-      },
-      error: (error) => {
-        console.error('Error al verificar el estado del usuario:', error);
+      }else{
+        this.isLoggedIn = false;
       }
-    });
+    })
   }
 
   logout(): void {
