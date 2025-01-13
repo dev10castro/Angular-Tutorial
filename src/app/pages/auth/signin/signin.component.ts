@@ -60,7 +60,8 @@ export class SigninComponent {
         })
         .then(() => {
           alert("Registro exitoso. Por favor, inicia sesión.");
-          this.router.navigate(['/login']); // Redirigir al login
+          this.formSignin.reset();
+          this.router.navigate(['/tasks']); // Redirigir a tasks
         })
         .catch((error) => {
           console.error("Error durante el registro:", error);

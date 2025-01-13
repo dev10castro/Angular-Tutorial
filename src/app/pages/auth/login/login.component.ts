@@ -27,19 +27,26 @@ export class LoginComponent{
     });
   }
 
-  Onsubmit(){
-
+  onSubmit() {
     if (this.formLogin.valid) {
-      console.log("El login es valido")
+      console.log("Los campos de textto son válidos");
+
       this.loginservice.login(this.formLogin.value)
-        .then(response => this.router.navigate(['/home']))
-        .catch(error => console.log(error))
+        .then(response => {
+          alert("¡Login correcto! Bienvenido al sistema."); // Mensaje de éxito
+          this.router.navigate(['/home']);
+        })
+        .catch(error => {
+          alert("Login incorrecto"); // Mensaje de error
+        });
 
-      console.log(this.loginservice.isAuthenticated)
+      console.log(this.loginservice.isAuthenticated);
     } else {
-
+      // Mensaje de alerta para formulario inválido
+      alert("Por favor, completa todos los campos correctamente.");
     }
   }
+
 
   loginWithGoogle() {
     this.loginservice.loginWithGoogle()
