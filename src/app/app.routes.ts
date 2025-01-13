@@ -7,20 +7,20 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {NotfoundComponent} from './pages/notfound/notfound.component';
 import {StatsComponent} from './components/dashboard/stats/stats.component';
 import {ProfileComponent} from './components/dashboard/profile/profile.component';
-import {canActivate, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
+import {AuthGuard, canActivate, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
 import {TaskformComponent} from './components/task/taskform/taskform.component';
 
 export const routes: Routes = [
-  {path:'home', component:HomeComponent,...canActivate(() => redirectUnauthorizedTo(['/login']))},
-  {path:'tasks', component:TasksComponent,...canActivate(() => redirectUnauthorizedTo(['/login']))},
+  {path:'home', component:HomeComponent,canActivate:[AuthGuard],data:{role:'*'}},
+  {path:'tasks', component:TasksComponent,canActivate:[AuthGuard],data:{role:'*'}},
   {path:'login', component:LoginComponent},
-  {path:'taskform', component:TaskformComponent,...canActivate(() => redirectUnauthorizedTo(['/login']))},
+  {path:'taskform', component:TaskformComponent,canActivate:[AuthGuard],data:{role:'admin'}},
   {path:'signin', component:SigninComponent},
 
   {path:'dashboard',component:DashboardComponent,...canActivate(() => redirectUnauthorizedTo(['/login'])),children:[
       {path: 'stats', component: StatsComponent, ...canActivate(() => redirectUnauthorizedTo(['/login'])) },
       { path: 'profile', component: ProfileComponent, ...canActivate(() => redirectUnauthorizedTo(['/login'])) },
-    ]},
+    ],canActivate:[AuthGuard],data:{role:'*'}},
   {path:'notfound', component:NotfoundComponent},
   {path:'', redirectTo:'/login', pathMatch:'full'},
   {path: '**',redirectTo:'/notfound',pathMatch:'full'}

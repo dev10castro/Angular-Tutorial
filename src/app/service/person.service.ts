@@ -21,7 +21,6 @@ export class PersonService {
   }
 
   // Obtener datos de la persona por UID
-
   getByUid(uid: string): Observable<Person | null> {
     const usersRef = ref(this.database,this.COLLECTION_NAME);
     const userRef = child(usersRef,uid);
