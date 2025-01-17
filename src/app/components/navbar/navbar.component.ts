@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
@@ -20,8 +20,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private router: Router,
     private authservice: AuthService,
-    private personService: PersonService,
-    private cdr: ChangeDetectorRef
+    private personService: PersonService
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +47,6 @@ export class NavbarComponent implements OnInit {
       },
     });
   }
-
 
   logout(): void {
     // Manejar el cierre de sesión

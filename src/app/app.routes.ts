@@ -16,6 +16,7 @@ export const routes: Routes = [
   {path:'login', component:LoginComponent},
   {path:'taskform/:id', component:TaskformComponent,canActivate:[AuthGuard],data:{role:'admin'}},
   {path:'signin', component:SigninComponent},
+
   {path:'dashboard',component:DashboardComponent,...canActivate(() => redirectUnauthorizedTo(['/login'])),children:[
       {path: 'stats', component: StatsComponent, ...canActivate(() => redirectUnauthorizedTo(['/login'])) },
       { path: 'profile', component: ProfileComponent, ...canActivate(() => redirectUnauthorizedTo(['/login'])) },
