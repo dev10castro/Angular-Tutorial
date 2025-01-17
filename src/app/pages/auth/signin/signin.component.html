@@ -1,14 +1,22 @@
-
-<div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #ADD8E6;">
-  <div class="card shadow-lg p-4" style="width: 35rem; max-width: 90%;">
-    <h1 class="text-center mb-4">REGÍSTRATE!!</h1>
+<div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #f0f8ff;">
+  <div class="card shadow-lg p-4 border-0 rounded-3" style="width: 35rem; max-width: 90%;">
+    <h1 class="text-center mb-4 text-primary">¡Regístrate!</h1>
     <form [formGroup]="formSignin" (ngSubmit)="onSubmit()">
+
       <!-- Campo de Nombre -->
       <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre" required formControlName="name"
-               [ngClass]="{'is-valid': formSignin.get('name')?.valid && formSignin.get('name')?.touched,
-                      'is-invalid': formSignin.get('name')?.invalid && formSignin.get('name')?.touched}">
+        <label for="nombre" class="form-label fw-bold">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombre"
+          placeholder="Ingrese su nombre"
+          required
+          formControlName="name"
+          [ngClass]="{
+            'is-valid': formSignin.get('name')?.valid && formSignin.get('name')?.touched,
+            'is-invalid': formSignin.get('name')?.invalid && formSignin.get('name')?.touched
+          }">
         <div class="invalid-feedback" *ngIf="formSignin.get('name')?.invalid && formSignin.get('name')?.touched">
           <small *ngIf="formSignin.get('name')?.hasError('required')">El nombre es obligatorio.</small>
           <small *ngIf="formSignin.get('name')?.hasError('maxlength')">Nombre demasiado largo.</small>
@@ -17,10 +25,18 @@
 
       <!-- Campo de Apellidos -->
       <div class="mb-3">
-        <label for="apellidos" class="form-label">Apellidos</label>
-        <input type="text" class="form-control" id="apellidos" placeholder="Ingrese sus apellidos" required formControlName="surname"
-               [ngClass]="{'is-valid': formSignin.get('surname')?.valid && formSignin.get('surname')?.touched,
-                      'is-invalid': formSignin.get('surname')?.invalid && formSignin.get('surname')?.touched}">
+        <label for="apellidos" class="form-label fw-bold">Apellidos</label>
+        <input
+          type="text"
+          class="form-control"
+          id="apellidos"
+          placeholder="Ingrese sus apellidos"
+          required
+          formControlName="surname"
+          [ngClass]="{
+            'is-valid': formSignin.get('surname')?.valid && formSignin.get('surname')?.touched,
+            'is-invalid': formSignin.get('surname')?.invalid && formSignin.get('surname')?.touched
+          }">
         <div class="invalid-feedback" *ngIf="formSignin.get('surname')?.invalid && formSignin.get('surname')?.touched">
           <small *ngIf="formSignin.get('surname')?.hasError('required')">El apellido es obligatorio.</small>
           <small *ngIf="formSignin.get('surname')?.hasError('maxlength')">Apellido demasiado largo.</small>
@@ -30,10 +46,18 @@
 
       <!-- Campo de Email -->
       <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Ingrese su email" required formControlName="email"
-               [ngClass]="{'is-valid': formSignin.get('email')?.valid && formSignin.get('email')?.touched,
-                      'is-invalid': formSignin.get('email')?.invalid && formSignin.get('email')?.touched}">
+        <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="Ingrese su email"
+          required
+          formControlName="email"
+          [ngClass]="{
+            'is-valid': formSignin.get('email')?.valid && formSignin.get('email')?.touched,
+            'is-invalid': formSignin.get('email')?.invalid && formSignin.get('email')?.touched
+          }">
         <div class="invalid-feedback" *ngIf="formSignin.get('email')?.invalid && formSignin.get('email')?.touched">
           <small *ngIf="formSignin.get('email')?.hasError('required')">El email es obligatorio.</small>
           <small *ngIf="formSignin.get('email')?.hasError('email')">Email inválido.</small>
@@ -41,28 +65,41 @@
       </div>
 
       <!-- Campo de Role -->
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" formControlName="role">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Activa para ser "admin" (por defecto "user")</label>
+      <div class="form-check form-switch mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          formControlName="role">
+        <label class="form-check-label fw-bold" for="flexSwitchCheckDefault">
+          Activar para ser "admin" (por defecto "user")
+        </label>
       </div>
 
       <!-- Campo de Contraseña -->
       <div class="mb-3">
-        <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" formControlName="password"
-               [ngClass]="{'is-valid': formSignin.get('password')?.valid && formSignin.get('password')?.touched,
-                      'is-invalid': formSignin.get('password')?.invalid && formSignin.get('password')?.touched}">
+        <label for="password" class="form-label fw-bold">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Ingrese su contraseña"
+          formControlName="password"
+          [ngClass]="{
+            'is-valid': formSignin.get('password')?.valid && formSignin.get('password')?.touched,
+            'is-invalid': formSignin.get('password')?.invalid && formSignin.get('password')?.touched
+          }">
         <div class="invalid-feedback" *ngIf="formSignin.get('password')?.invalid && formSignin.get('password')?.touched">
           <small *ngIf="formSignin.get('password')?.hasError('required')">La contraseña es obligatoria.</small>
-          <small *ngIf="formSignin.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</small>
+          <small *ngIf="formSignin.get('password')?.hasError('minlength')">Debe tener al menos 6 caracteres.</small>
         </div>
       </div>
 
       <!-- Botón de Envío -->
       <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+        <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Registrarse</button>
       </div>
     </form>
   </div>
 </div>
-

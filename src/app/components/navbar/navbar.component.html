@@ -30,7 +30,7 @@
         </li>
         <!-- Nueva Tarea, solo si el rol es admin -->
         <li class="nav-item" *ngIf="role === 'admin'">
-          <a class="nav-link" routerLink="/taskform">Nueva Tarea</a>
+          <a class="nav-link" routerLink="/taskform/:id">Nueva Tarea</a>
         </li>
         <!-- Opción de cerrar sesión -->
         <li class="nav-item">

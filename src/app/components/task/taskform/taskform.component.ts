@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {customValidator, customvalidatorPriority} from './taskform.validators';
 import {Task, TaskPriority, TaskStatus} from '../../models/task.model';
 import {TaskService} from '../../../service/task.service';
-import {Route, Router} from '@angular/router';
+import {ActivatedRoute, Route, Router} from '@angular/router';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {FooterComponent} from '../../footer/footer.component';
 import {routes} from '../../../app.routes';
@@ -25,7 +25,7 @@ export class TaskformComponent implements OnChanges{
 
 
 
-  constructor(formBuilder: FormBuilder,private taskService:TaskService, private router: Router) {
+  constructor(formBuilder: FormBuilder,private taskService:TaskService, private router: Router,private route: ActivatedRoute) {
     this.formTaskEdit = formBuilder.group({
 
       'name': ['', [Validators.required, Validators.maxLength(50), Validators.minLength(5)]],
@@ -35,11 +35,8 @@ export class TaskformComponent implements OnChanges{
     });
   }
 
-
-
   onSubmit(): void {
     if (this.formTaskEdit.valid) {
-
       const newTask: Task = new Task(
         this.formTaskEdit.get('id')?.value || '',
         this.formTaskEdit.get('name')?.value,
@@ -83,6 +80,8 @@ export class TaskformComponent implements OnChanges{
 
     }
   }
+
+
 
 
 

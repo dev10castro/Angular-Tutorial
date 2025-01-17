@@ -10,8 +10,8 @@ import {Router} from '@angular/router';
   selector: 'app-login',
   standalone: true,
   imports: [
-    NavbarComponent,
-    FooterComponent,ReactiveFormsModule,CommonModule
+
+    ReactiveFormsModule,CommonModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -29,16 +29,17 @@ export class LoginComponent{
 
   onSubmit() {
     if (this.formLogin.valid) {
-      console.log("Los campos de textto son válidos");
+      console.log("Los campos de texto son válidos");
 
-      this.loginservice.login(this.formLogin.value)
-        .then(response => {
-          alert("¡Login correcto! Bienvenido al sistema."); // Mensaje de éxito
-          this.router.navigate(['/home']);
-        })
-        .catch(error => {
-          alert("Login incorrecto"); // Mensaje de error
-        });
+      this.loginservice.login(this.formLogin.value).subscribe({
+        next: (userCredential) => {
+          console.log('Login exitoso:', userCredential);
+          this.router.navigate(['/tasks']);
+        },
+        error: (err) => {
+          console.error('Error en el login:', err);
+        },
+      });
 
       console.log(this.loginservice.isAuthenticated);
     } else {
@@ -53,6 +54,10 @@ export class LoginComponent{
       .then(response => this.router.navigate(['/home']))
       .catch(error => console.log(error));
 
+  }
+
+  goToRegister() {
+    this.router.navigate(['/signin']);
   }
 
 }

@@ -1,17 +1,16 @@
-
-<div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #ADD8E6;">
-  <div class="card shadow-lg p-4" style="width: 30rem; max-width: 90%;">
-    <h1 class="text-center mb-4">BIENVENIDO A TASKMANAGER</h1>
+<div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #f0f8ff;">
+  <div class="card shadow-lg p-4 border-0 rounded-3" style="width: 30rem; max-width: 90%;">
+    <h1 class="text-center mb-4 text-primary">Bienvenido a TaskManager</h1>
     <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+
       <!-- Campo Email -->
       <div class="form-group mb-3">
-        <label for="exampleInputEmail1">Email address</label>
+        <label for="email" class="form-label fw-bold">Correo Electrónico</label>
         <input
           type="email"
           class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
+          id="email"
+          placeholder="Introduce tu email"
           formControlName="email"
           [ngClass]="{
             'is-valid': formLogin.get('email')?.valid && formLogin.get('email')?.touched,
@@ -25,41 +24,52 @@
 
       <!-- Campo Password -->
       <div class="form-group mb-3">
-        <label for="exampleInputPassword1">Password</label>
+        <label for="password" class="form-label fw-bold">Contraseña</label>
         <input
           type="password"
           class="form-control"
-          id="exampleInputPassword1"
-          placeholder="Password"
+          id="password"
+          placeholder="Introduce tu contraseña"
           formControlName="password"
           [ngClass]="{
             'is-valid': formLogin.get('password')?.valid && formLogin.get('password')?.touched,
             'is-invalid': formLogin.get('password')?.invalid && formLogin.get('password')?.touched
           }">
         <div class="invalid-feedback" *ngIf="formLogin.get('password')?.invalid && formLogin.get('password')?.touched">
-          <small *ngIf="formLogin.get('password')?.hasError('required')">El password es obligatorio.</small>
-          <small *ngIf="formLogin.get('password')?.hasError('minlength')">El password debe tener al menos 6 caracteres.</small>
+          <small *ngIf="formLogin.get('password')?.hasError('required')">La contraseña es obligatoria.</small>
+          <small *ngIf="formLogin.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</small>
         </div>
       </div>
 
       <!-- Check -->
       <div class="form-group form-check mb-3">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <input type="checkbox" class="form-check-input" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">Recordarme</label>
       </div>
 
       <!-- Botón Submit -->
       <div class="d-flex justify-content-center mb-3">
-        <button type="submit" class="btn btn-primary w-100">Submit</button>
+        <button type="submit" class="btn btn-primary w-100 fw-bold py-2" [disabled]="formLogin.invalid">
+          Iniciar Sesión
+        </button>
       </div>
 
       <!-- Botón Google Login -->
-      <div class="d-flex justify-content-center">
-        <button (click)="loginWithGoogle()" class="btn btn-danger w-100">
-          <i class="bi bi-google m-1"></i>Login with Google
+      <div class="d-flex justify-content-center mb-3">
+        <button type="button" (click)="loginWithGoogle()" class="btn btn-danger w-100 fw-bold py-2">
+          <i class="bi bi-google me-2"></i>Iniciar sesión con Google
         </button>
       </div>
+
+      <!-- Registro -->
+      <div class="text-center">
+        <p class="text-muted">¿No tienes cuenta?
+          <a href="javascript:void(0);" (click)="goToRegister()" class="text-decoration-none text-primary fw-bold">
+            Regístrate aquí
+          </a>
+        </p>
+      </div>
+
     </form>
   </div>
 </div>
-

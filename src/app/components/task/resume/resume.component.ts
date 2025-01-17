@@ -12,11 +12,9 @@ import {Router} from '@angular/router';
   styleUrls: ['./resume.component.css']
 })
 export class ResumeComponent {
+
   @Input()
   taskInput!: Task;
-
-  @Output()
-  eventEditTask = new EventEmitter<Task>(); // Evento para editar una tarea
 
   tasks: Task[] = [];
 
@@ -48,10 +46,10 @@ export class ResumeComponent {
     );
   }
 
-
-  editTask(taskId: string): void {
-
+  editTask(task: Task): void {
+    this.router.navigate(['/taskform', task.id]);
   }
+
 
 
 }

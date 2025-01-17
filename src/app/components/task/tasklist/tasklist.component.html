@@ -1,13 +1,20 @@
-<div class="container">
+<div class="container my-5">
   <div class="row">
-    <div class="col-md-12">
-      <h2 class="text-center">Bienvenido, {{ personName }} {{ personSurname }}.</h2>
-      <h3>Listado de Tareas</h3>
+    <!-- Encabezado -->
+    <div class="col-md-12 text-center mb-4">
+      <h2 class="text-primary">Bienvenido, {{ personName }} {{ personSurname }}.</h2>
+      <h3 class="text-muted">Listado de Tareas</h3>
     </div>
+
+    <!-- Listado de Tareas -->
     <div class="col-md-12">
-      <ng-container *ngFor="let task of tasks">
-        <app-resume *ngIf="!task.isDelete" [taskInput]="task" ></app-resume>
-      </ng-container>
+      <div class="task-list bg-light p-4 rounded shadow-sm">
+        <ng-container *ngFor="let task of tasks">
+          <div class="task-item mb-3">
+            <app-resume *ngIf="task" [taskInput]="task"></app-resume>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

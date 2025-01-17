@@ -8,17 +8,16 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,User,UserCredential
 } from '@angular/fire/auth';
-import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+import {BehaviorSubject, catchError, from, map, Observable, of, switchMap} from 'rxjs';
 import {Person} from '../components/models/person.model';
 import {PersonService} from './person.service';
-
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+
 
   constructor(private auth: Auth,private personService:PersonService) {
 
@@ -32,16 +31,16 @@ export class AuthService {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  login({email, password}: any) {
-    return signInWithEmailAndPassword(this.auth, email, password);
+  login({ email, password }: any): Observable<any> {
+    return from(signInWithEmailAndPassword(this.auth, email, password));
   }
 
   loginWithGoogle() {
     return signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
-  logout() {
-    return signOut(this.auth);
+  logout(): Observable<void> {
+    return from(signOut(this.auth));
   }
 
   isAuthenticated(): Observable<boolean> {
@@ -50,7 +49,6 @@ export class AuthService {
         this.auth,
         (user) => {
           observer.next(!!user); // true si hay usuario, false si no
-          observer.complete();
         },
         (error) => {
           observer.error(error);
@@ -65,7 +63,6 @@ export class AuthService {
         this.auth,
         (user) => {
           observer.next(user);
-          observer.complete();
         },
         (error) => {
           observer.error(error);

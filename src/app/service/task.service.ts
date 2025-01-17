@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Task, TaskPriority, TaskStatus} from '../components/models/task.model';
-import {TaskEvent} from '../components/models/TaskEvent.model';
 import {Database, ref, remove, onValue, push, set} from '@angular/fire/database';
-import {catchError, from, map, Observable, tap, throwError} from 'rxjs';
+import {catchError, from, map, Observable, take, tap, throwError} from 'rxjs';
 
 
 
@@ -85,9 +84,6 @@ export class TaskService {
       });
   }
 
-
-
-
   getTasksAll(): Observable<Task[]> {
     const taskRef = ref(this.database, "taskList");
     return new Observable((observer) => {
@@ -102,7 +98,6 @@ export class TaskService {
             } as Task);
           });
           observer.next(tasks); // Emite las tareas al suscriptor
-          observer.complete();
         },
         (error) => {
           observer.error(error);
@@ -121,6 +116,18 @@ export class TaskService {
         return throwError(() => error);
       })
     );
+  }
+
+  updateTask(task: Task): Promise<void> {
+    const taskRef = ref(this.database, `taskList/${task.id}`); // Referencia a la tarea en Firebase
+    return set(taskRef, task)
+      .then(() => {
+        console.log('Tarea actualizada exitosamente en Firebase.');
+      })
+      .catch((error) => {
+        console.error('Error al actualizar la tarea:', error);
+        throw error;
+      });
   }
 
 
