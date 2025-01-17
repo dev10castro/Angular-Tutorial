@@ -35,13 +35,12 @@ export class NavbarComponent implements OnInit {
                 console.log('Rol actualizado:', person.role);
                 console.log('isLoggedIn actualizado:', this.isLoggedIn);
               }
-              this.cdr.detectChanges(); // Forzar actualización
             },
           });
         } else {
           this.isLoggedIn = false;
           this.role = null;
-          this.cdr.detectChanges(); // Forzar actualización
+
         }
 
       },
